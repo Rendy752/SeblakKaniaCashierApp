@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->enum('status', ['Dine-in', 'Wrapped', 'Dine-in and Wrapped', 'Delivery']);
-            $table->integer('stock');
             $table->timestamps();
         });
     }
