@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->enum('status', ['Dine-in', 'Wrapped', 'Dine-in and Wrapped', 'Delivery']);
+            $table->enum('status', ['Dine-in', 'Take Away', 'Dine-in and Take Away', 'Delivery']);
             $table->timestamps();
         });
     }

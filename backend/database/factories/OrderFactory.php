@@ -19,7 +19,7 @@ class OrderFactory extends Factory
         $name = $this->faker->safeColorName;
         return [
             "name" => $this->faker->name,
-            "status" => $this->faker->randomElement(['Dine-in', 'Wrapped', 'Dine-in and Wrapped', 'Delivery']),
+            "status" => $this->faker->randomElement(['Dine-in', 'Take Away', 'Dine-in and Take Away', 'Delivery']),
         ];
     }
 }
