@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -12,7 +13,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $kategori = Category::all();
+        // select kategori.nama,count(buku.id) as jumlah from kategori left join buku on kategori.id=buku.kategori_id group by kategori.id;
+        $jumlah = Category::select('kategori.id', DB::raw('count(products.id) as jumlah'))->leftJoin('products', 'products.kategori_id', '=', 'kategori.id')->groupBy('kategori.id')->get();
+        // dd($jumlah);
+        return view('kategori.index')->with('kategori', $kategori)->with('jumlah', $jumlah);
     }
 
     /**
@@ -28,7 +33,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required|string|unique:kategori",
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+        ]);
+
+        return back();
     }
 
     /**
@@ -52,14 +65,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validate = $request->validate([
+            "name" => "required|string|unique:kategori,name," . $category->id,
+        ]);
+        $namaAwal = $category->nama;
+        $category->update(['name' => $validate['name']]);
+
+        return redirect('kategori');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        Category::find($id)->delete();
+
+        return back();
     }
 }

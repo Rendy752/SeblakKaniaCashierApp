@@ -99,7 +99,7 @@ class ProductController extends Controller
                     unlink(public_path() . '/picture/' . $renamePicture);
                     $validate['picture']->move('picture', $renamePicture);
                 } else if ($request->picture) {
-                    unlink(public_path() . '/foto/' . $namaAwal);
+                    unlink(public_path() . '/picture/' . $namaAwal);
                     $pictureName = $validate['name'] . '.' . $validate['picture']->getClientOriginalExtension();
                     $validate['picture']->move('picture', $pictureName);
                 }
@@ -111,16 +111,15 @@ class ProductController extends Controller
                     'price' => $validate['price'],
                     'stock' => $validate['stock']
                 ]);
-                return 
-                    response()->json(['message' => 'Successfully updating product'], 200),
-                    ;
+                return
+                    response()->json(['message' => 'Successfully updating product'], 200);
             } catch (e) {
                 return response()->json(['message' => 'Error updating product'], 400);
             }
         } catch (e) {
             return response()->json(['message' => 'Server error'], 500);
         } finally {
-            return redirect('buku')
+            return redirect('buku');
         }
     }
 
@@ -145,7 +144,7 @@ class ProductController extends Controller
             return [response()->json([
                 'message' => 'Successfully searching product',
                 'product' => $product
-            ], 200),view('buku.index')->with('produk',$product)];
+            ], 200), view('buku.index')->with('produk', $product)];
         } catch (e) {
             return response()->json(['message' => 'Error searching product'], 400);
         }
