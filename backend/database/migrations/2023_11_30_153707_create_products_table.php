@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->uuid('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->restrictOnDelete()->cascadeOnUpdate();
-            $table->string('picture');
+            $table->binary('picture');
             $table->string('name');
             $table->decimal('price');
             $table->integer('stock');

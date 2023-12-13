@@ -1,0 +1,47 @@
+:root {
+  --background: #fff;
+  --background-secondary: #4c4a4a;
+  --error: #c61334;
+  --success: #26e826;
+  --warning: #F39C12;
+  --on-background: #000;
+}
+
+[data-theme="light"] {
+  --background: #DDDDDD;
+  --suface: #FFFFFF;
+  --on-background: #333333;
+  --on-background-grey: #6d6d6d;
+  --on-surface: #333333;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html::-webkit-scrollbar{
+  display: none;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.app-container {
+  display: flex;
+  color: var(--on-background);
+  background-color: var(--background);
+  min-height: 100vh;
+  transition: all ease-in-out 0.5s;
+}
+
+header {
+  background-color: var(--background-secondary);
+  width:20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+

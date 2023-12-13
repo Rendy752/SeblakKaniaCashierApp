@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get("/product", [ProductController::class, "view"]);
-// Route::post("/product/add", [ProductController::class, "add"]);
-// Route::put("/product/{id}/edit", [ProductController::class, "edit"]);
-// Route::put("/product/{id}/delete", [ProductController::class, "delete"]);
-// Route::get("/product/{search}", [ProductController::class, "search"]);
+Route::get("/product", [ProductController::class, "view"]);
+Route::post("/product/add", [ProductController::class, "add"]);
+Route::put("/product/{id}/edit", [ProductController::class, "edit"]);
+Route::put("/product/{id}/delete", [ProductController::class, "delete"]);
+Route::get("/product/{search}", [ProductController::class, "search"]);
 
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
