@@ -14,9 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $kategori = Category::all();
-        // select kategori.nama,count(buku.id) as jumlah from kategori left join buku on kategori.id=buku.kategori_id group by kategori.id;
-        $jumlah = Category::select('categories.id', DB::raw('count(products.id) as jumlah'))->leftJoin('products', 'products.category_id', '=', 'category_id')->groupBy('category_id', 'categories.id')->get();
-        // dd($jumlah);
+        $jumlah = Category::select('categories.id', DB::raw('count(products.id) as jumlah'))->leftJoin('products', 'products.category_id', '=', 'categories.id')->groupBy('categories.id')->get();
         return view('kategori.index')->with('kategori', $kategori)->with('jumlah', $jumlah);
     }
 

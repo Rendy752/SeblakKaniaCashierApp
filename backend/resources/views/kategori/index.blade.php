@@ -26,6 +26,7 @@
         .btn-container {
             display: flex;
             gap: 5px;
+            justify-content: center
         }
 
         .btn {
@@ -58,13 +59,13 @@
                 @foreach ($kategori as $item)
                     <tr>
                         <td>{{ $item->name }}</td>
+                        @foreach ($jumlah as $jum)
+                        @if ($jum->id === $item->id)
                         <td>
-                            @foreach ($jumlah as $jum)
-                                @if ($jum->name == $item->name)
                                     {{ $jum->jumlah }}
+                                </td>
                                 @endif
                             @endforeach
-                        </td>
                         <td>
                             <div class="btn-container">
                                 <a href="" class="btn btn-warning">Edit</a>
