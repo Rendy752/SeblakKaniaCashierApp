@@ -19,3 +19,6 @@ Route::get('/', function () {
 Route::get('/mainmenu', function () {
     return view('mainmenu');
 });
+Route::get('/kategori', function () {
+    return view('kategori.index');
+});
