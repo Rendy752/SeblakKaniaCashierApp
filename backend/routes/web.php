@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,4 @@ Route::get('/mainmenu', function () {
 Route::get('/kategori', function () {
     return view('kategori.index');
 });
+Route::resource('kategori', CategoryController::class);
