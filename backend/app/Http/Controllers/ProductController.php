@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 
 
 class ProductController extends Controller
 {
-    public function view()
+    public function index()
     {
         try {
             // $product = Product::orderBy("id", "desc")->paginate(10);
@@ -27,7 +28,7 @@ class ProductController extends Controller
         }
     }
 
-    public function add(Request $request)
+    public function store(Request $request)
     {
         try {
             try {
@@ -76,7 +77,7 @@ class ProductController extends Controller
         }
     }
 
-    public function edit(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             try {
@@ -123,7 +124,7 @@ class ProductController extends Controller
         }
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         // try {
         //     $product = Product::findOrFail($id);

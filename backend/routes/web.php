@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,10 +22,11 @@ Route::get('/', function () {
 Route::get('/mainmenu', function () {
     return view('mainmenu');
 });
-Route::get('/kategori', function () {
-    return view('kategori.index');
-});
+// Route::get('/kategori', function () {
+//     return view('kategori.index');
+// });
 Route::resource('kategori', CategoryController::class);
+Route::resource('produk', ProductController::class);
 
 Route::get('/produk', [ProductController::class, 'view']);
 Route::get('/produk/edit/{id}', [ProductController::class, 'edit']);
