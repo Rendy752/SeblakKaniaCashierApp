@@ -23,7 +23,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $category = Category::all();
+        return view('kategori.create')->with('category',$category);
     }
 
     /**
@@ -32,14 +33,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "name" => "required|string|unique:kategori",
+            "name" => "required|string|unique:categories",
         ]);
 
         Category::create([
             'name' => $request->name,
         ]);
 
-        return back();
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -55,20 +56,22 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+
+        return view('kategori.index', compact('kategori'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $kategori)
     {
         $validate = $request->validate([
-            "name" => "required|string|unique:kategori,name," . $category->id,
+            "name" => "required|string|unique:kategori,name," . $kategori->id,
         ]);
-        $category->update(['name' => $validate['name']]);
+        $kategori->update(['name' => $validate['name']]);
 
-        return redirect('kategori');
+        return redirect()->route('kategori.index')->with('success', "Data $kategori->name Berhasil Diupdate");
     }
 
     /**
@@ -77,7 +80,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
-
-        return back();
+        return redirect()->route('kategori.index')->with("info", "Data Kategori berhasil diHapus ke database");
     }
 }

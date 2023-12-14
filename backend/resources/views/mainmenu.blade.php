@@ -11,23 +11,24 @@
     <title>Cashier App </title>
 
     <!-- Bootstrap -->
-    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{asset('vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="{{asset('vendors/nprogress/nprogress.css')}}" rel="stylesheet">
     <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="{{asset('vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
 
     <!-- bootstrap-progressbar -->
-    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="{{asset('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+    <link href="{{asset('vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet" />
     <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
+
 </head>
 
 <body class="nav-md">
@@ -44,12 +45,15 @@
 
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
-                        <div class="profile_pic">
-                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-                        </div>
                         <div class="profile_info">
+                            @if(Auth::check())
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <h2>{{ Auth::user()->name }}</h2>
+                            @else
+                            <a data-toggle="tooltip" data-placement="top" title="Login" href={{ "loginMenu"}}>
+                                <span class="glyphicon glyphicon-log-in" aria-hidden="true"> Login</span>
+                            </a>  
+                            @endif
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -65,7 +69,7 @@
                                 </li>
                                 <li><a><i class="fa fa-product-hunt"></i> Produk</a>
                                 </li>
-                                <li><a><i class="fa fa-align-center"></i> Kategori</a>
+                                <li><a href="{{route('kategori.index')}}"><i class="fa fa-align-center"></i> Kategori</a>
                                 </li>
                                 <li><a><i class="fa fa-history"></i> History</a>
                                     <ul class="nav child_menu">
@@ -89,9 +93,15 @@
                         <a data-toggle="tooltip" data-placement="top" title="Lock">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                        @if (Auth::check())
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
+                        @else
+                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/logout">
+                            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                        </a>
+                        @endif
                     </div>
                     <!-- /menu footer buttons -->
                 </div>
@@ -260,19 +270,19 @@
     </div>
 
     <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="{{asset('vendors/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{asset('vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <script src="{{asset('vendors/fastclick/lib/fastclick.js')}}"></script>
     <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
+    <script src="{{asset('vendors/nprogress/nprogress.js')}}"></script>
     <!-- Chart.js -->
-    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+    <script src="{{asset('vendors/Chart.js/dist/Chart.min.js')}}"></script>
     <!-- ... (code truncated for brevity) ... -->
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <script src="{{asset('build/js/custom.min.js')}}"></script>
 </body>
 
 </html>
