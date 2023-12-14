@@ -68,7 +68,6 @@ class CategoryController extends Controller
         $validate = $request->validate([
             "name" => "required|string|unique:kategori,name," . $category->id,
         ]);
-        $namaAwal = $category->nama;
         $category->update(['name' => $validate['name']]);
 
         return redirect('kategori');

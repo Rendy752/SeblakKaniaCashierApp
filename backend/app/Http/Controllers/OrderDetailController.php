@@ -12,7 +12,8 @@ class OrderDetailController extends Controller
      */
     public function index()
     {
-        //
+        $order_Detail = Order_Detail::all();
+        view('order_detail.index')->with('order_detail', $order_Detail);
     }
 
     /**
@@ -28,7 +29,11 @@ class OrderDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'product_id' => 'required|string|unique:products',
+            'amount' => 'required|numeric',
+            'note' => 'string',
+        ]);
     }
 
     /**
