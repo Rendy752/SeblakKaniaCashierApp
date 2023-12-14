@@ -5,18 +5,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-Route::get('/loginMenu', [UserController::class, 'index']);
+Route::view('/loginMenu', 'login');
+Route::view('/registerMenu', 'register');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/logout', [UserController::class, 'logout']);
@@ -24,9 +14,7 @@ Route::get('/logout', [UserController::class, 'logout']);
 Route::get('/', function () {
     return view('mainmenu');
 });
-// Route::get('/kategori', function () {
-//     return view('kategori.index');
-// });
+
 Route::resource('kategori', CategoryController::class);
 Route::resource('produk', ProductController::class);
 
