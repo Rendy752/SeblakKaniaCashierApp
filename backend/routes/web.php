@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,7 @@ Route::get('/kategori', function () {
     return view('kategori.index');
 });
 Route::resource('kategori', CategoryController::class);
+
+Route::get('/produk', [ProductController::class, 'view']);
+Route::get('/produk/edit/{id}', [ProductController::class, 'edit']);
+Route::get('/produk/delete/{id}', [ProductController::class, 'delete']);

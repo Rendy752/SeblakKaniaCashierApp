@@ -16,12 +16,12 @@ class ProductController extends Controller
             $product = Product::all();
             if (!$product)
                 return response()->json(["message" => "Product not found"], 404);
-            return [
-                response()->json([
-                    "message" => "Successfully fetched product",
-                    "product" => $product
-                ], 200),
-                view('produk.index')->with('produk', $product)];
+            return view('produk.index')->with('produk', $product);
+            // response()->json([
+            //     "message" => "Successfully fetched product",
+            //     "product" => $product
+            // ], 200)
+
         } catch (e) {
             return response()->json(["message" => "Server error"], 500);
         }
@@ -125,16 +125,20 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        try {
-            $product = Product::findOrFail($id);
-            unlink(public_path() . '/picture/' . $product->picture);
-            $product->delete();
-            return response()->json(['message' => 'Successfully deleting product'], 200);
-        } catch (e) {
-            return response()->json(['message' => 'Error deleting product'], 400);
-        } finally {
-            return back();
-        }
+        // try {
+        //     $product = Product::findOrFail($id);
+        //     unlink(public_path() . '/picture/' . $product->picture);
+        //     $product->delete();
+        //     return response()->json(['message' => 'Successfully deleting product'], 200);
+        // } catch (e) {
+        //     return response()->json(['message' => 'Error deleting product'], 400);
+        // } finally {
+        //     return back();
+        // }
+        $product = Product::findOrFail($id);
+        unlink(public_path() . '/picture/' . $product->picture);
+        $product->delete();
+        return back();
     }
 
     public function search($search)
