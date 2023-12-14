@@ -44,12 +44,15 @@
 
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
-                        <div class="profile_pic">
-                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-                        </div>
                         <div class="profile_info">
+                            @if(Auth::check())
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <h2>{{ Auth::user()->name }}</h2>
+                            @else
+                            <a data-toggle="tooltip" data-placement="top" title="Login" href={{ "loginMenu"}}>
+                                <span class="glyphicon glyphicon-log-in" aria-hidden="true"> Login</span>
+                            </a>  
+                            @endif
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -89,9 +92,15 @@
                         <a data-toggle="tooltip" data-placement="top" title="Lock">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                        @if (Auth::check())
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
+                        @else
+                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/logout">
+                            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                        </a>
+                        @endif
                     </div>
                     <!-- /menu footer buttons -->
                 </div>
