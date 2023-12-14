@@ -10,10 +10,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    function index()
-    {
-        return view("login");
-    }
+
     function login(Request $request)
     {
         $request->validate([
@@ -28,7 +25,7 @@ class UserController extends Controller
 
         if (Auth::attempt($infoLogin)) {
             toastr()->success('Login berhasil');
-            return view('mainmenu');
+            return redirect('/');
         } else {
             toastr()->error('Username dan password tidak valid');
             return back();
@@ -58,7 +55,8 @@ class UserController extends Controller
         ];
 
         if (Auth::attempt($infoLogin)) {
-            return view('mainmenu');
+            toastr()->success('Registrasi dan login berhasil');
+            return redirect('/');
         } else {
             return back();
         }
@@ -67,6 +65,7 @@ class UserController extends Controller
     function logout()
     {
         Auth::logout();
-        return view('login');
+        toastr()->success('Berhasil Logout');
+        return redirect('/');
     }
 }
