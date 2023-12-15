@@ -49,6 +49,14 @@
                     <div class="text-danger">&times {{ $message }}</div>
                   @enderror
                 </div>
+
+                <div class="form-outline mb-4">
+                  <select type="email" class="form-control" name="role" required>
+                    <option value="Owner">Owner</option>
+                    <option value="Kasir">Kasir</option>
+                    <option value="Koki">Koki</option>
+                  </select>
+                </div>
   
                 <div class="row">
                     <div class="col-md-6 mb-4">
