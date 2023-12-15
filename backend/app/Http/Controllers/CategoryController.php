@@ -39,7 +39,7 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
         ]);
-
+        toastr()->success('Data berhasil Di Ditambahkan');
         return redirect()->route('kategori.index');
     }
 
@@ -56,8 +56,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-
-        return view('kategori.index', compact('kategori'));
+        dd($category);
+        return view('kategori.edit', compact('category'));
 
     }
 

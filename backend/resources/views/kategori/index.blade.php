@@ -1,4 +1,5 @@
 @extends('mainmenu')
+
 @section('content')
 <style>
     .content-wrapper {
@@ -9,37 +10,62 @@
         border-radius: 10px;
     }
 
-    .content h1 {
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        transition: transform 0.3s; /* Menambahkan efek transisi */
+    .card:hover {
+        transform: scale(1.05); /* Efek perbesaran saat mouse di atas kartu */
+    }
+
+    .card-body {
         text-align: center;
-        margin-bottom: 30px;
     }
 
-    .alert {
-        margin-bottom: 20px;
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
     }
 
-    .table th,
-    .table td {
+    .card-text {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+
+    .btn-container {
         text-align: center;
+        margin-top: 15px;
+    }
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+
     }
 
-        .btn-container {
-            display: flex;
-            gap: 5px;
-            justify-content: center
-        }
+    .btn-edit {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+    }
 
-    .btn {
-        margin: 0;
+    .btn-delete {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
     }
 </style>
 
 <div class="content-wrapper">
     <div class="content">
-        <h1 class="lead" style="font-size: 40px; margin:20px 10px"><strong>Produk</strong></h1>
+        <h1 class="lead" style="font-size: 40px; margin:20px 10px"><strong>Kategori</strong></h1>
+        @if (Auth::check())
         <div class="add-film-button">
             <a href="{{ route('kategori.create') }}" class="btn btn-success mb-2 w-10">Tambah Kategori</a>
         </div>
+        @endif
         @if (Session::has('createSuccess'))
         <div class="alert alert-success lead">
             {{ Session::get('createSuccess') }}
@@ -50,40 +76,37 @@
             {{ Session::get('deleteSuccess') }}
         </div>
         @endif
-        <table class="table table-bordered table-stripped">
-            <thead>
-                <tr>
-                    <th>Kategori</th>
-                    <th>Jumlah</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($kategori as $item)
-                    <tr>
-                        <td>{{ $item->name }}</td>
-                        @foreach ($jumlah as $jum)
-                        @if ($jum->id === $item->id)
-                        <td>
-                                    {{ $jum->jumlah }}
-                                </td>
-                                @endif
+
+        <div class="row">
+            @foreach ($kategori as $item)
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $item->name }}</h5>
+                            @foreach ($jumlah as $jum)
+                            @if ($jum->id === $item->id)
+                            <p class="card-text">Jumlah:  {{ $jum->jumlah }}</p>
+                            @endif
                             @endforeach
-                        <td>
+                            @if (Auth::check())
                             <div class="btn-container">
 
-                                <a href="{{ route('kategori.edit',$item) }}" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('kategori.destroy',$item->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger">Delete</button>
-                                </form>
+                                <div class="btn-group">
+                                    <a href="{{ route('kategori.edit', $item) }}" class="btn btn-warning btn-edit">Edit</a>
+                                    <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-delete">Delete</button>
+                                    </form>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
 </div>
+
 @endsection

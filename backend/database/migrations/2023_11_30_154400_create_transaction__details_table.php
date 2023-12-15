@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('transaction__details', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('transactions')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreign('transaction_id')->references('id')->on('transactions')->cascadeOnDelete()->cascadeOnUpdate();
             $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->decimal('price');
             $table->integer('amount');
             $table->timestamps();

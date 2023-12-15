@@ -48,7 +48,8 @@
         <div class="card custom-card">
             <div class="card-body">
                 <h4 class="card-title custom-card-title">Edit Kategori</h4>
-                <form class="forms-sample" method="post" action="{{route('kategori.update', $kategori)}}" enctype="multipart/form-data">
+
+                <form class="forms-sample" method="post" action="{{route('kategori.update', $category->id)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
