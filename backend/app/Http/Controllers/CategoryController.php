@@ -32,17 +32,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            "name" => "required|string|unique:categories",
-        ]);
+        try {
+            $request->validate([
+                "name" => "required|string|unique:categories",
+            ]);
 
-        Category::create([
-            'name' => $request->name,
-        ]);
-        toastr()->success('Data berhasil Di Ditambahkan');
-        return redirect()->route('kategori.index');
+            Category::create([
+                'name' => $request->name,
+            ]);
+
+            toastr()->success('Data berhasil Ditambahkan');
+            return redirect()->route('kategori.index');
+        } catch (\Exception $e) {
+            // Catat error atau tangani sesuai dengan kebutuhan aplikasi Anda
+            toastr()->error('Gagal menambahkan data. Error: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
-
     /**
      * Display the specified resource.
      */
@@ -54,31 +60,33 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
-    {
-        dd($category);
-        return view('kategori.edit', compact('category'));
+    public function edit(Category $kategori)
+{
+    return view('kategori.edit', compact('kategori'));
+}
 
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Category $kategori)
-    {
-        $validate = $request->validate([
-            "name" => "required|string|unique:kategori,name," . $kategori->id,
-        ]);
-        $kategori->update(['name' => $validate['name']]);
+{
+    $validate = $request->validate([
+        "name" => "required|string|unique:categories,name," . $kategori->id,
+    ]);
 
-        return redirect()->route('kategori.index')->with('success', "Data $kategori->name Berhasil Diupdate");
-    }
+    $kategori->update(['name' => $validate['name']]);
+
+    return redirect()->route('kategori.index')->with('success', "Data $kategori->name Berhasil Diupdate");
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
+
         Category::find($id)->delete();
         return redirect()->route('kategori.index')->with("info", "Data Kategori berhasil diHapus ke database");
     }
