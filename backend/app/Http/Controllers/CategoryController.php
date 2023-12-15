@@ -62,7 +62,6 @@ class CategoryController extends Controller
      */
     public function edit(Category $kategori)
     {
-        dd($kategori);
         return view('kategori.edit', compact('kategori'));
     }
 

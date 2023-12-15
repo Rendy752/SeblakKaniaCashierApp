@@ -52,7 +52,7 @@
                             <h3>Menu</h3>
                             <ul class="nav side-menu">
                                 @if (Auth::check())
-                                <li><a><i class="fa fa-cart-plus"></i>Transaksi</a>
+                                <li><a href="{{route('pesanan.index')}}"><i class="fa fa-cart-plus"></i>Pesanan</a>
                                 </li>
                                 @endif
                                 <li><a href="{{route('produk.index')}}"><i class="fa fa-product-hunt"></i> Produk</a>
@@ -64,7 +64,7 @@
                                     <ul class="nav child_menu">
                                         <li><a>Pengeluaran</a></li>
                                         <li><a>Pemasukkan</a></li>
-                                        <li><a> Transaksi</a></li>
+                                        <li><a href="{{url('pesanan/daftar')}}">Pesanan</a></li>
                                     </ul>
                                 </li>
                                 @endif

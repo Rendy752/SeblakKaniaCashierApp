@@ -19,7 +19,6 @@
         display: flex;
         flex-direction: column; /* Tambahkan CSS ini */
         align-items: center; /* Tambahkan CSS ini */
-        padding: 1rem;
     }
 
     .card:hover {
@@ -43,9 +42,16 @@
         margin-bottom: 10px; /* Tambahkan margin ke gambar */
     }
 
+    .card {
+        padding: 1rem
+    }
+
     .btn-container {
         margin-top: 15px;
         display: flex;
+        justify-content: center;
+        gap: 1rem;
+        text-align: center;
     }
 
     .btn-delete {
@@ -62,21 +68,17 @@
         color: #212529;
     }
 
-    .btn-container {
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        text-align: center;
+    input {
+        width: 15%;
     }
 </style>
 
 <div class="content-wrapper">
     <div class="content">
-        <h1 class="lead" style="font-size: 40px; margin: 20px 10px"><strong>Produk</strong></h1>
+        <h1 class="lead" style="font-size: 40px; margin: 20px 10px"><strong>Pesanan</strong></h1>
         @if (Auth::check())
         <div class="add-cinema-button">
-            <a href="{{ route('produk.create') }}" class="btn btn-success mb-2 w-10">Tambah Produk</a>
+            <a href="{{ route('produk.create') }}" class="btn btn-success mb-2 w-10">Tambah Pesanan</a>
         </div>
         @endif
         @if (Session::has('createSuccess'))
@@ -101,12 +103,9 @@
                             <p class="card-text"><strong>Stok: </strong>{{ $item->stock }}</p>
                             @if (Auth::check())
                             <div class="btn-container">
-                                <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-edit">Edit</a>
-                                <form method="POST" action="{{ route('produk.destroy', $item->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-delete">Delete</button>
-                                </form>
+                                <a class="btn btn-success">&plus;</a>
+                                <input type="number" placeholder="0">
+                                <a class="btn btn-success">&minus;</a>
                             </div>
                             @endif
                         </div>

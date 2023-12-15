@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Order_Detail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,14 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::all();
-        return view('order.index')->with('order', $order);
+        $product = Product::all();
+        return view('pesanan.index')->with('order', $order)->with('produk', $product);
+    }
+
+    public function daftar()
+    {
+        $order = Order::all();
+        return view('pesanan.daftar')->with('order', $order);
     }
 
     /**
@@ -55,9 +63,15 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show($id)
     {
-        //
+        $orderDetail = Order_Detail::where('order_id', '=', $id)->get();
+        $total = 0;
+        foreach ($orderDetail as $detail) {
+            $total += Product::where('id', '=', $detail->product_id)->first()->price;
+        }
+        $name = Order::find($id)->name;
+        return view('pesanan.detail')->with('detail', $orderDetail)->with('name', $name)->with('total', $total);
     }
 
     /**

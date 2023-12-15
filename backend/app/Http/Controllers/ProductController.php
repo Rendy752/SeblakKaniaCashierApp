@@ -72,7 +72,9 @@ class ProductController extends Controller
                 $gambarAwal = $product->picture;
                 $namaAwal = $product->name;
                 if (isset($validate['picture'])) { //jika dimasukkan gambar
-                    unlink(public_path() . '/picture/' . $product->picture);
+                    if (file_exists(public_path() . '/picture/' . $product->picture)) {
+                        unlink(public_path() . '/picture/' . $product->picture);
+                    }
                     $picture = $validate['name'] . '.' . $request->picture->getClientOriginalExtension(); // Menggunakan nama asli file
                     $request->picture->move('picture', $picture);
                 } elseif ($validate['name'] != $namaAwal) { //jika nama berbeda dengan di database
