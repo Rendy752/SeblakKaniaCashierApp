@@ -7,7 +7,6 @@ use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-// use Nette\Utils\Validator;
 
 class ProductController extends Controller
 {
@@ -22,6 +21,10 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return response()->json(["message" => "Server error"], 500);
         }
+    }
+    public function edit(Product $product)
+    {
+        return view('produk.edit', compact('product'));
     }
     public function store(Request $request)
     {
@@ -55,52 +58,42 @@ class ProductController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
         try {
-            try {
-                $validate = $request->validate([
-                    'picture' => 'file|mimes:jpeg,jpg,png|max:2048',
-                    'name' => 'string|unique:products',
-                    'price' => 'numeric|min:1000',
-                    'stock' => 'numeric|min:0',
-                ]);
+            $validate = $request->validate([
+                'picture' => 'file|mimes:jpeg,jpg,png|max:2048',
+                'name' => 'string|unique:products,name,' . $product->id,
+                'price' => 'numeric|min:1000',
+                'stock' => 'numeric|min:0',
+                'category_id' => 'exists:categories,id',
+            ]);
 
-                $product = Product::findOrFail($id);
-                $namaAwal = $product->picture;
-                if ($validate['picture'] != $namaAwal) {
-                    $renamePicture = $validate['name'] . "." . pathinfo('/picture/' . $product->picture)['extension'];
-                    $pictureName = $renamePicture;
-                    rename(public_path() . '/picture/' . $namaAwal, public_path() . '/picture/' . $pictureName);
-                }
+            $pictureName = $product->picture;
 
-                if ($request->picture && $validate['name'] != $namaAwal) {
-                    unlink(public_path() . '/picture/' . $renamePicture);
-                    $validate['picture']->move('picture', $renamePicture);
-                } else if ($request->picture) {
-                    unlink(public_path() . '/picture/' . $namaAwal);
-                    $pictureName = $validate['name'] . '.' . $validate['picture']->getClientOriginalExtension();
-                    $validate['picture']->move('picture', $pictureName);
-                }
-
-                $product->update([
-                    'picture' => $pictureName,
-                    'category_id' => $validate['category_id'],
-                    'name' => $validate['name'],
-                    'price' => $validate['price'],
-                    'stock' => $validate['stock']
-                ]);
-                return
-                    response()->json(['message' => 'Successfully updating product'], 200);
-            } catch (e) {
-                return response()->json(['message' => 'Error updating product'], 400);
+            if ($request->hasFile('picture')) {
+                $pictureName = $validate['name'] . '.' . $request->file('picture')->getClientOriginalExtension();
+                $request->file('picture')->move('picture', $pictureName);
             }
-        } catch (e) {
-            return response()->json(['message' => 'Server error'], 500);
-        } finally {
-            return redirect('buku');
+
+            $product->update([
+                'picture' => $pictureName,
+                'category_id' => $validate['category_id'],
+                'name' => $validate['name'],
+                'price' => $validate['price'],
+                'stock' => $validate['stock'],
+            ]);
+
+            toastr()->success($validate['name'] . ' berhasil diupdate');
+            return redirect()->route('produk.index');
+        } catch (\Exception $e) {
+            toastr()->error('Error dalam mengupdate produk: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
+
+
+
     public function create()
     {
         $product = Product::all();
