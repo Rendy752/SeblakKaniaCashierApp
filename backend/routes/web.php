@@ -18,6 +18,6 @@ Route::get('/', function () {
 Route::resource('kategori', CategoryController::class);
 Route::resource('produk', ProductController::class);
 
-Route::get('/produk', [ProductController::class, 'view']);
-Route::get('/produk/edit/{id}', [ProductController::class, 'edit']);
-Route::get('/produk/delete/{id}', [ProductController::class, 'delete']);
+// Route::get('/produk', [ProductController::class, 'view']);
+// Route::get('/produk/edit/{id}', [ProductController::class, 'edit']);
+// Route::get('/produk/delete/{id}', [ProductController::class, 'delete']);

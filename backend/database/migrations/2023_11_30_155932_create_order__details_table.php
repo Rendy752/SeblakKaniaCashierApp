@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('order__details', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('order_id');
-            $table->foreign('order_id')->references('id')->on('orders')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('amount');
             $table->text('note')->nullable();
             $table->timestamps();

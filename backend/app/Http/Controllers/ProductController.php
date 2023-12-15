@@ -6,75 +6,53 @@ use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
+// use Nette\Utils\Validator;
 
 class ProductController extends Controller
 {
     public function index()
     {
         try {
-            // $product = Product::orderBy("id", "desc")->paginate(10);
-            $product = Product::all();
-            if (!$product)
-                return response()->json(["message" => "Product not found"], 404);
-            return view('produk.index')->with('produk', $product);
-            // response()->json([
-            //     "message" => "Successfully fetched product",
-            //     "product" => $product
-            // ], 200)
+            $products = Product::orderBy("id", "desc")->paginate(10); // Menggunakan paginate untuk membatasi jumlah produk per halaman
+            // $products = Product::all(); // Jika ingin menampilkan semua produk tanpa batasan halaman
 
-        } catch (e) {
+                return view('produk.index')->with('produk', $products);
+
+        } catch (\Exception $e) {
             return response()->json(["message" => "Server error"], 500);
         }
     }
-
     public function store(Request $request)
     {
-        try {
-            try {
-                $validate = $request->validate([
-                    'picture' => 'required|file|mimes:jpeg,jpg,png|max:2048',
-                    'name' => 'required|string|unique:products',
-                    'price' => 'required|numeric|min:1000',
-                    'stock' => 'required|numeric|min:0',
-                ]);
-            } catch (e) {
-                return response()->json(['message' => 'Error adding product'], 400);
-            }
 
-            $picture = $validate['name'] . '.' . $request->picture->getClientOriginalExtension();
-            $request->file->move('picture', $picture);
+            $validate = $request->validate([
+                'picture' => 'required|file|mimes:jpeg,jpg,png|max:2048',
+                'name' => 'required|string|unique:products',
+                'price' => 'required|numeric|min:1000',
+                'stock' => 'required|numeric|min:0',
+                'category_id' => 'required|exists:categories,id', // Sesuaikan dengan nama tabel dan kolom kategori Anda
+            ],[toastr()->error('Error dalam menambahkan produk'),
+             back()]);
 
-            // foreach ($validate as $image) {
-            //     $extension = $image->extension();
-            //     $hash = hash('md5', $image->get());
-            //     $filename = "$hash.$extension";
-            //     $filesize = $image->getSize() / 1024;
-            //     $originalName = $image->getClientOriginalName();
-            //     try {
-            //         $account = new Account;
-            //         // .... etc. do something with the model
-            //         $account->logo = $image->get();
-            //         $account->save();
-            //     } catch (\Illuminate\Database\QueryException $e) {
-            //         // DEBUG IN CASE OF ERROR
-            //         dd($e);
-            //     }
-            // }
+            $picture =$validate['name'].'.'.$request->picture->getClientOriginalExtension(); // Menggunakan nama asli file
+            $request->picture->move('picture', $picture);
 
             Product::create([
                 'picture' => $picture,
                 'category_id' => $request->category_id,
-                'name' => $validate['name'],
-                'price' => $validate['price'],
-                'stock' => $validate['stock'],
+                'name' => $request->name,
+                'price' => $request->price,
+                'stock' => $request->stock,
             ]);
-            return response()->json(['message' => 'Successfully adding product'], 200);
-        } catch (e) {
-            return response()->json(['message' => 'Server error'], 500);
-        } finally {
-            redirect('produk');
-        }
+
+            $products = Product::all();
+
+            toastr()->success($request->name.' berhasil ditambahkan');
+            return view('produk.index')->with('produk', $products);
+
+            // return view('produk.index')->with('kategori', $category)->with('createSuccess', 'Produk berhasil ditambahkan');
+
     }
 
     public function update(Request $request, $id)
@@ -123,19 +101,15 @@ class ProductController extends Controller
             return redirect('buku');
         }
     }
+    public function create()
+    {
+        $product = Product::all();
+        $category = Category::all();
+        return view('produk.create')->with('produk', $product)->with('kategori', $category);
+    }
 
     public function destroy($id)
     {
-        // try {
-        //     $product = Product::findOrFail($id);
-        //     unlink(public_path() . '/picture/' . $product->picture);
-        //     $product->delete();
-        //     return response()->json(['message' => 'Successfully deleting product'], 200);
-        // } catch (e) {
-        //     return response()->json(['message' => 'Error deleting product'], 400);
-        // } finally {
-        //     return back();
-        // }
         $product = Product::findOrFail($id);
         unlink(public_path() . '/picture/' . $product->picture);
         $product->delete();

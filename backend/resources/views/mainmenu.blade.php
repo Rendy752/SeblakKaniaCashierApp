@@ -18,6 +18,11 @@
     <link href="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
 
+    <style>
+        html::-webkit-scrollbar{
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -38,7 +43,7 @@
                             @else
                             <a data-toggle="tooltip" data-placement="top" title="Login" href={{ "loginMenu"}}>
                                 <span class="glyphicon glyphicon-log-in" aria-hidden="true"> Login</span>
-                            </a>  
+                            </a>
                             @endif
                         </div>
                     </div>
@@ -51,19 +56,23 @@
                         <div class="menu_section">
                             <h3>Menu</h3>
                             <ul class="nav side-menu">
+                                @if (Auth::check())
                                 <li><a><i class="fa fa-cart-plus"></i>Transaksi</a>
                                 </li>
-                                <li><a><i class="fa fa-product-hunt"></i> Produk</a>
+                                @endif
+                                <li><a href="{{route('produk.index')}}"><i class="fa fa-product-hunt"></i> Produk</a>
                                 </li>
                                 <li><a href="{{route('kategori.index')}}"><i class="fa fa-align-center"></i> Kategori</a>
                                 </li>
+                                @if (Auth::check())
                                 <li><a><i class="fa fa-history"></i> History</a>
                                     <ul class="nav child_menu">
-                                        <li><a href="tables.html">Pengeluaran</a></li>
-                                        <li><a href="tables_dynamic.html">Pemasukkan</a></li>
-                                        <li><a href="tables_dynamic.html"> Transaksi</a></li>
+                                        <li><a>Pengeluaran</a></li>
+                                        <li><a>Pemasukkan</a></li>
+                                        <li><a> Transaksi</a></li>
                                     </ul>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -169,7 +178,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                   Copyright &copy; Seblak Kania 2023
                 </div>
                 <div class="clearfix"></div>
             </footer>
