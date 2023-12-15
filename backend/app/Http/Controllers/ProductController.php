@@ -13,18 +13,18 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $products = Product::orderBy("id", "desc")->paginate(10); // Menggunakan paginate untuk membatasi jumlah produk per halaman
-            // $products = Product::all(); // Jika ingin menampilkan semua produk tanpa batasan halaman
-
+            $products = Product::all(); // Menggunakan paginate untuk membatasi jumlah produk per halaman
             return view('produk.index')->with('produk', $products);
 
         } catch (\Exception $e) {
             return response()->json(["message" => "Server error"], 500);
         }
     }
-    public function edit(Product $product)
+    public function edit($id)
     {
-        return view('produk.edit', compact('product'));
+        $product = Product::find($id);
+        $category = Category::all();
+        return view('produk.edit', compact('product'))->with('kategori', $category);
     }
     public function store(Request $request)
     {
@@ -58,42 +58,47 @@ class ProductController extends Controller
 
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         try {
-            $validate = $request->validate([
-                'picture' => 'file|mimes:jpeg,jpg,png|max:2048',
-                'name' => 'string|unique:products,name,' . $product->id,
-                'price' => 'numeric|min:1000',
-                'stock' => 'numeric|min:0',
-                'category_id' => 'exists:categories,id',
-            ]);
+            try {
+                $validate = $request->validate([
+                    'picture' => 'file|mimes:jpeg,jpg,png|max:2048',
+                    'name' => 'string',
+                    'price' => 'numeric|min:1000',
+                    'stock' => 'numeric|min:0',
+                ], [toastr()->error('Error dalam mengupdate produk'), back()]);
+                $product = Product::findOrFail($id);
+                $gambarAwal = $product->picture;
+                $namaAwal = $product->name;
+                if (isset($validate['picture'])) { //jika dimasukkan gambar
+                    unlink(public_path() . '/picture/' . $product->picture);
+                    $picture = $validate['name'] . '.' . $request->picture->getClientOriginalExtension(); // Menggunakan nama asli file
+                    $request->picture->move('picture', $picture);
+                } elseif ($validate['name'] != $namaAwal) { //jika nama berbeda dengan di database
+                    $renamePicture = $validate['name'] . "." . pathinfo('/picture/' . $product->picture)['extension'];
+                    $picture = $renamePicture;
+                    rename(public_path() . '/picture/' . $gambarAwal, public_path() . '/picture/' . $picture);
+                } else {
+                    $picture = $product->picture;
+                }
 
-            $pictureName = $product->picture;
-
-            if ($request->hasFile('picture')) {
-                $pictureName = $validate['name'] . '.' . $request->file('picture')->getClientOriginalExtension();
-                $request->file('picture')->move('picture', $pictureName);
+                $product->update([
+                    'picture' => $picture,
+                    'category_id' => $request->category_id,
+                    'name' => $request->name,
+                    'price' => $request->price,
+                    'stock' => $request->stock
+                ]);
+                toastr()->success('Produk berhasil diupdate');
+                return redirect()->route('produk.index');
+            } catch (e) {
+                return response()->json(['message' => 'Error updating product'], 400);
             }
-
-            $product->update([
-                'picture' => $pictureName,
-                'category_id' => $validate['category_id'],
-                'name' => $validate['name'],
-                'price' => $validate['price'],
-                'stock' => $validate['stock'],
-            ]);
-
-            toastr()->success($validate['name'] . ' berhasil diupdate');
-            return redirect()->route('produk.index');
-        } catch (\Exception $e) {
-            toastr()->error('Error dalam mengupdate produk: ' . $e->getMessage());
-            return redirect()->back();
+        } catch (e) {
+            return response()->json(['message' => 'Server error'], 500);
         }
     }
-
-
-
     public function create()
     {
         $product = Product::all();

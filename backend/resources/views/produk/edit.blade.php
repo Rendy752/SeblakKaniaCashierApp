@@ -43,6 +43,14 @@
             background-color: #dae0e5;
             border-color: #dae0e5;
         }
+
+        .product-image {
+            max-height: 120px; /* Adjusted maximum height */
+        }
+
+        .form-group{
+            text-align: center;
+        }
     </style>
 
 <div class="row justify-content-center mt-4">
@@ -54,15 +62,45 @@
                 <form class="forms-sample" method="post" action="{{ route('produk.update',$product->id) }}" enctype="multipart/form-data">
 
                     @csrf
-                    @method('PUT')
+                    @method('patch')
+                    <div class="form-group">
+                        <img src="{{ asset('picture/'.$product->picture) }}" class="card-img-top product-image" alt="Product Image">
+                    </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nama Produk" value="{{ $product->name }}">
+                        @error('name')
+                            <div class="text-danger">&times {{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group row">
+                        <label for="category_id" class="col-sm-3 col-form-label text-right">kategori</label>
+                        <div class="col-sm-9">
+                            <select name="category_id" class="form-control">
+                                @foreach ($kategori as $item)
+                                <option @if($product->category_id==$item->id) selected @endif value="{{ $item->id }}">
+                                    {{ $item->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="stok" name="stock" placeholder="Stok" value="{{ $product->stock }}">
+                        <input type="number" class="form-control" id="harga" name="price" placeholder="Harga" value="{{ $product->price }}">
+                        @error('price')
+                            <div class="text-danger">&times {{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="picture" name="picture" placeholder="URL Gambar" value="{{ $product->picture }}">
+                        <input type="number" class="form-control" id="stok" name="stock" placeholder="Stok" value="{{ $product->stock }}">
+                        @error('stock')
+                            <div class="text-danger">&times {{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <input type="file" class="form-control" id="picture" name="picture" placeholder="URL Gambar" value="{{ $product->picture }}">
+                        @error('picture')
+                            <div class="text-danger">&times {{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary custom-btn-primary">Submit</button>

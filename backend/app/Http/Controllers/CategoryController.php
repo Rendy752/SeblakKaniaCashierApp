@@ -24,7 +24,7 @@ class CategoryController extends Controller
     public function create()
     {
         $category = Category::all();
-        return view('kategori.create')->with('category',$category);
+        return view('kategori.create')->with('category', $category);
     }
 
     /**
@@ -61,24 +61,25 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Category $kategori)
-{
-    return view('kategori.edit', compact('kategori'));
-}
+    {
+        dd($kategori);
+        return view('kategori.edit', compact('kategori'));
+    }
 
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Category $kategori)
-{
-    $validate = $request->validate([
-        "name" => "required|string|unique:categories,name," . $kategori->id,
-    ]);
+    {
+        $validate = $request->validate([
+            "name" => "required|string|unique:categories,name," . $kategori->id,
+        ]);
 
-    $kategori->update(['name' => $validate['name']]);
+        $kategori->update(['name' => $validate['name']]);
 
-    return redirect()->route('kategori.index')->with('success', "Data $kategori->name Berhasil Diupdate");
-}
+        return redirect()->route('kategori.index')->with('success', "Data $kategori->name Berhasil Diupdate");
+    }
 
 
     /**

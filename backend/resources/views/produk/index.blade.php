@@ -92,12 +92,12 @@
                             <p class="card-text"><strong>Stok: </strong>{{ $item->stock }}</p>
                             @if (Auth::check())
                             <div class="btn-container">
+                                <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-edit">Edit</a>
                                 <form method="POST" action="{{ route('produk.destroy', $item->id) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-delete">Delete</button>
                                 </form>
-                                <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-edit">Edit</a>
                             </div>
                             @endif
                         </div>
