@@ -81,7 +81,7 @@
             </div>
         @endif
 
-        <div class="row">
+        <div class="row-reverse">
             {{-- Loop through your products here --}}
             @foreach($produk as $item)
                 <div class="col-md-4 mb-4">
