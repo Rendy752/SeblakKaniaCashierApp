@@ -16,6 +16,8 @@
         border-radius: 10px;
         margin-bottom: 15px;
         transition: transform 0.3s; /* Menambahkan efek transisi */
+    }
+
     .card:hover {
         transform: scale(1.05); /* Efek perbesaran saat mouse di atas kartu */
     }
