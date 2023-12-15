@@ -94,7 +94,7 @@
                             <div class="btn-container">
 
                                 <div class="btn-group">
-                                    <a href="{{ route('kategori.edit', $item) }}" class="btn btn-warning btn-edit">Edit</a>
+                                    <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-warning btn-edit">Edit</a>
                                     <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
